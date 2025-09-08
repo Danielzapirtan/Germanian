@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Învățăm Germana – pentru vorbitorii de română</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header { background: #2c3e50; color: white; padding: 1em; text-align: center; }
+    nav { background: #34495e; padding: 0.5em; text-align: center; }
+    nav a { color: white; margin: 0 1em; text-decoration: none; }
+    main { padding: 1.5em; }
+    section { margin-bottom: 2em; }
+    .word-box { border: 1px solid #ccc; padding: 1em; max-width: 400px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Învățăm Germana</h1>
+    <p>Pentru vorbitorii de română</p>
+  </header>
+
+  <nav>
+    <a href="#vocabular">Vocabular</a>
+    <a href="#gramatica">Gramatică</a>
+    <a href="#exercitii">Exerciții</a>
+    <a href="#resurse">Resurse</a>
+  </nav>
+
+  <main>
+    <section id="cuvantul-zilei">
+      <h2>Cuvântul zilei</h2>
+      <div class="word-box">
+        <p><strong id="ro-word"></strong> → <span id="de-word"></span></p>
+        <p id="example"></p>
+      </div>
+    </section>
+
+    <section id="vocabular">
+      <h2>Vocabular</h2>
+      <p>Liste tematice de cuvinte: familie, muncă, călătorii…</p>
+    </section>
+
+    <section id="gramatica">
+      <h2>Gramatică</h2>
+      <p>Explicații comparative română–germană (cazuri, verbe, ordinea cuvintelor).</p>
+    </section>
+
+    <section id="exercitii">
+      <h2>Exerciții</h2>
+      <p>Întrebări interactive și quiz-uri simple.</p>
+    </section>
+
+    <section id="resurse">
+      <h2>Resurse</h2>
+      <p>Link-uri utile: dicționare, podcasturi, YouTube.</p>
+    </section>
+  </main>
+
+  <script>
+    const words = [
+      {ro: "carte", de: "das Buch", ex: "Eu citesc o carte. → Ich lese ein Buch."},
+      {ro: "apă", de: "das Wasser", ex: "Beau apă. → Ich trinke Wasser."},
+      {ro: "casă", de: "das Haus", ex: "Casa este mare. → Das Haus ist groß."}
+    ];
+    const w = words[Math.floor(Math.random() * words.length)];
+    document.getElementById("ro-word").textContent = w.ro;
+    document.getElementById("de-word").textContent = w.de;
+    document.getElementById("example").textContent = w.ex;
+  </script>
+</body>
+</html>
