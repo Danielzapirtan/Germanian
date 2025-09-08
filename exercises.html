@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exerciții – Învățăm Germana</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header { background: #2c3e50; color: white; padding: 1em; text-align: center; }
+    nav { background: #34495e; padding: 0.5em; text-align: center; }
+    nav a { color: white; margin: 0 1em; text-decoration: none; }
+    main { padding: 1.5em; }
+    .quiz-box { border: 1px solid #ccc; padding: 1em; max-width: 500px; margin: 1em auto; }
+    button { margin: 0.5em; padding: 0.5em 1em; }
+    #feedback { margin-top: 1em; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Exerciții</h1>
+    <p>Întrebări interactive pentru vocabular</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Acasă</a>
+    <a href="vocab.html">Vocabular</a>
+    <a href="grammar.html">Gramatică</a>
+    <a href="exercises.html">Exerciții</a>
+    <a href="resources.html">Resurse</a>
+  </nav>
+
+  <main>
+    <h2>Quiz: Alege traducerea corectă</h2>
+    <div class="quiz-box">
+      <p id="question"></p>
+      <div id="options"></div>
+      <div id="feedback"></div>
+      <button onclick="nextQuestion()">Următoarea întrebare</button>
+    </div>
+  </main>
+
+  <script>
+    const questions = [
+      {
+        ro: "carte",
+        correct: "das Buch",
+        options: ["der Tisch", "das Buch", "die Katze"]
+      },
+      {
+        ro: "apă",
+        correct: "das Wasser",
+        options: ["das Wasser", "die Milch", "der Stuhl"]
+      },
+      {
+        ro: "mamă",
+        correct: "die Mutter",
+        options: ["die Mutter", "der Vater", "das Haus"]
+      }
+    ];
+
+    let current = 0;
+
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById("question").textContent =
+        `Cum se spune „${q.ro}” în germană?`;
+
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, q.correct);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function checkAnswer(choice, correct) {
+      const fb = document.getElementById("feedback");
+      if (choice === correct) {
+        fb.textContent = "✅ Corect!";
+        fb.style.color = "green";
+      } else {
+        fb.textContent = `❌ Greșit. Răspunsul corect este: ${correct}`;
+        fb.style.color = "red";
+      }
+    }
+
+    function nextQuestion() {
+      current = (current + 1) % questions.length;
+      showQuestion();
+    }
+
+    // initialize
+    showQuestion();
+  </script>
+</body>
+</html>
