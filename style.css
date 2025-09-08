@@ -1,0 +1,104 @@
+/* ===== Global Styles ===== */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fafafa;
+  color: #333;
+}
+
+header {
+  background: #2c3e50;
+  color: white;
+  padding: 1em;
+  text-align: center;
+}
+
+nav {
+  background: #34495e;
+  padding: 0.5em;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  margin: 0 1em;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 1.5em;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* ===== Section Headings ===== */
+h1, h2 {
+  color: #2c3e50;
+}
+
+section {
+  margin-bottom: 2em;
+}
+
+/* ===== Tables ===== */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em auto;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: center;
+}
+
+th {
+  background: #f2f2f2;
+}
+
+/* ===== Special Boxes ===== */
+.word-box, .quiz-box, .note {
+  border: 1px solid #ccc;
+  padding: 1em;
+  background: #fff;
+  border-radius: 6px;
+  margin: 1em auto;
+  max-width: 600px;
+}
+
+.note {
+  background: #f9f9f9;
+  border-left: 4px solid #2c3e50;
+}
+
+/* ===== Buttons ===== */
+button {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1a242f;
+}
+
+/* ===== Links in Content ===== */
+main a {
+  color: #2c3e50;
+}
+
+main a:hover {
+  color: #1a242f;
+  text-decoration: underline;
+}
