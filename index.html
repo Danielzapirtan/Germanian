@@ -102,6 +102,15 @@
   </div>
 </div><script>
 /* Sample lexicon (small) — replace or import a larger JSON via textarea. Each entry: {word,ipa,pos,flexions,meanings} */
+let lexicon;
+fetch('lexicon.json')
+    .then(response => response.json())
+    .then(data => {
+        lexicon = data;
+    })
+    .catch(error => {
+        alert('Error:', error);
+    });
 
 let lexicon = [
   {"word":"der","ipa":"deːɐ̯","pos":"DET","flexions":"Masc.Def.Art","meanings":["the (masc)"]},
