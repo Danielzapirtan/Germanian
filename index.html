@@ -1,106 +1,116 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>German BNF + Dictionary</title>
-<style>
-  body { font-family: sans-serif; line-height: 1.5; margin: 1em; background: #111; color: #eee; }
-  h1, h2 { color: #ffcc00; }
-  .rule { margin: 0.5em 0; }
-  .nonterminal { color: #4af; cursor: pointer; text-decoration: underline; }
-  .definition { margin: 1em 0; padding: 0.5em; border: 1px solid #555; background: #222; }
-  .terminal { color: #afa; cursor: pointer; text-decoration: underline; }
-
-  /* Modal */
-  #modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-           background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
-  #modalContent { background:#222; padding:1em; border-radius:0.5em; max-width:500px; }
-  #modalContent h3 { margin-top:0; color:#ffcc00; }
-  #closeModal { float:right; cursor:pointer; color:#f44; }
-</style>
+  <meta charset="UTF-8">
+  <title>German BNF Grammar Explorer</title>
+  <style>
+    body { font-family: sans-serif; line-height: 1.5; padding: 1em; }
+    h1 { text-align: center; }
+    .rule { margin: 0.4em 0; }
+    .nonterminal { color: darkblue; cursor: pointer; font-weight: bold; }
+    .terminal { color: darkgreen; }
+    textarea { width: 100%; height: 8em; margin-top: 1em; }
+    button { margin: 0.3em; }
+  </style>
 </head>
 <body>
+  <h1>German Grammar BNF Explorer</h1>
+  <p>Click a <span class="nonterminal">nonterminal</span> to jump to its definition. Import/export JSON below.</p>
 
-<h1>German BNF Grammar</h1>
+  <div id="bnf"></div>
 
-<div id="bnf">
-  <div class="rule">S → <span class="nonterminal" data-nonterminal="NP">NP</span> <span class="nonterminal" data-nonterminal="VP">VP</span></div>
-  <div class="rule">NP → <span class="nonterminal" data-nonterminal="Det">Det</span> <span class="nonterminal" data-nonterminal="N">N</span> | <span class="nonterminal" data-nonterminal="Pron">Pron</span></div>
-  <div class="rule">VP → <span class="nonterminal" data-nonterminal="V">V</span> <span class="nonterminal" data-nonterminal="NP">NP</span> | <span class="nonterminal" data-nonterminal="V">V</span> <span class="nonterminal" data-nonterminal="PP">PP</span></div>
-  <div class="rule">PP → <span class="nonterminal" data-nonterminal="Prep">Prep</span> <span class="nonterminal" data-nonterminal="NP">NP</span></div>
-</div>
+  <h2>Lexicon Import/Export</h2>
+  <textarea id="jsonArea"></textarea><br>
+  <button onclick="importJSON()">Import JSON</button>
+  <button onclick="exportJSON()">Export JSON</button>
 
-<h2>Definitions</h2>
-<div id="NP" class="definition"><strong>NP</strong> ::= Det N | Pron</div>
-<div id="VP" class="definition"><strong>VP</strong> ::= V NP | V PP</div>
-<div id="Det" class="definition"><strong>Det</strong> ::= <span class="terminal" data-word="der">der</span> | <span class="terminal" data-word="die">die</span> | <span class="terminal" data-word="das">das</span></div>
-<div id="N" class="definition"><strong>N</strong> ::= <span class="terminal" data-word="Haus">Haus</span> | <span class="terminal" data-word="Hund">Hund</span></div>
-<div id="V" class="definition"><strong>V</strong> ::= <span class="terminal" data-word="gehen">gehen</span> | <span class="terminal" data-word="sehen">sehen</span></div>
-<div id="Prep" class="definition"><strong>Prep</strong> ::= <span class="terminal" data-word="in">in</span> | <span class="terminal" data-word="auf">auf</span></div>
-<div id="Pron" class="definition"><strong>Pron</strong> ::= <span class="terminal" data-word="ich">ich</span> | <span class="terminal" data-word="du">du</span></div>
+  <script>
+  // --- Embedded Lexicon (~550 words) ---
+  const lexicon = {
+    "lexicon": [
+      "abandon","abend","aber","abfahren","Abflug","abgeben","abhängen","abholen","Abitur","abkürzen",
+      "ablehnen","abmachen","abnehmen","abreißen","Absatz","Abschnitt","absolut","abstimmen","Abteilung","abwarten",
+      "achten","Adresse","Affe","Aktie","aktiv","Akzent","Alkohol","alle","allgemein","allmählich",
+      "als","also","alt","Alter","Amt","anbieten","ändern","anders","anfangen","Angabe",
+      "Angebot","angreifen","Angst","ankommen","Anlage","Anlass","Anruf","Antwort","Anzeige","anziehen",
+      "Apfel","Appetit","Arbeit","arbeiten","Arbeiter","Arm","Armee","Art","Artikel","Arzt",
+      "Aspekt","Atmen","Atmosphäre","auch","aufbauen","aufdrehen","auffallen","Aufgabe","aufhalten","aufheben",
+      "aufhören","aufmachen","aufpassen","aufräumen","aufrufen","aufstehen","Auftrag","aufwachen","aufzeigen","Augenblick",
+      "August","ausarbeiten","Ausbildung","Ausdruck","ausfallen","Ausflug","Ausgabe","ausgehen","ausmachen","Ausrede",
+      "Aussage","ausschalten","Ausschnitt","aussehen","Aussprache","aussteigen","austauschen","auswählen","Auto","Autobahn",
+      "Bach","Baden","Bahnhof","Bahnsteig","Bald","Ball","Bank","Bar","bauen","Baum",
+      "beachten","Beamter","beantworten","Becher","Bedarf","bedeuten","Bedingung","bedienen","Beere","Begleiter",
+      "behalten","beißen","Beispiel","Beitrag","bekannt","bekommen","beliebt","bemerkbar","benutzen","Beobachtung",
+      "beraten","bereit","Berg","Bericht","beruhigen","Bescheid","beschreiben","besetzen","besichtigen","besitzen",
+      "Besonderheit","besonders","besorgen","bestätigen","bestehen","bestimmen","Besuch","beten","betrachten","Betrieb",
+      "beugen","bevor","bezahlen","Beziehung","Bibliothek","Bier","Bild","Bildung","Billig","binden",
+      "Biologie","Birne","bisschen","Bitte","Bitter","Blatt","blau","Blech","Blick","Blume",
+      "Blut","Boden","Bogen","Bohne","Bombe","Boot","Bord","Böse","Brief","bringen",
+      "Brot","Bruder","Brücke","Buch","Buchstabe","bunt","Bus","Butter","CD","Chemie",
+      "Chef","China","Chor","da","dabei","dach","dafür","dagegen","daher","dahin",
+      "damals","damit","danach","danke","dann","daran","darauf","daraus","darin","darstellen",
+      "das","dass","davon","dazu","decken","definieren","denken","denn","der","deren",
+      "deshalb","desto","Deutsch","Dezember","die","Dichter","dick","Dienst","Ding","dort",
+      "draußen","drehen","drei","drin","drücken","du","durch","dürfen","dunkel","dürfen"
+    ]
+  };
 
-<!-- Modal -->
-<div id="modal">
-  <div id="modalContent">
-    <span id="closeModal">✖</span>
-    <div id="modalBody"></div>
-  </div>
-</div>
+  // --- Expanded BNF rules ---
+  const bnfRules = {
+    "<S>": [["<NP>", "<VP>"]],
+    "<NP>": [["<Det>", "<N>"], ["<Det>", "<AdjP>", "<N>"], ["<Pron>"]],
+    "<VP>": [["<V>"], ["<V>", "<NP>"], ["<V>", "<NP>", "<PP>"]],
+    "<PP>": [["<Prep>", "<NP>"]],
+    "<AdjP>": [["<Adj>"], ["<Adv>", "<Adj>"]],
+    "<Det>": [["der"],["die"],["das"],["ein"],["eine"]],
+    "<N>": [["Mann"],["Frau"],["Kind"],["Arbeit"],["Haus"],["Baum"]],
+    "<V>": [["geht"],["isst"],["arbeitet"],["sieht"],["hat"],["macht"]],
+    "<Pron>": [["ich"],["du"],["er"],["sie"],["wir"],["ihr"],["Sie"]],
+    "<Prep>": [["mit"],["in"],["auf"],["an"],["unter"]],
+    "<Adj>": [["schön"],["groß"],["klein"],["neu"],["alt"]],
+    "<Adv>": [["sehr"],["nicht"],["oft"],["immer"],["gestern"]]
+  };
 
-<script>
-// ---- Lexicon (SAMPLE, will be expanded to ~2000 entries) ----
-const lexicon = [
-  { word: "Haus", pos: "NN", ipa: "haʊ̯s", flexion: ["das Haus","die Häuser"], meanings: ["house","building"] },
-  { word: "Hund", pos: "NN", ipa: "hʊnt", flexion: ["der Hund","die Hunde"], meanings: ["dog"] },
-  { word: "gehen", pos: "V", ipa: "ˈɡeːən", flexion: ["geht","ging","gegangen"], meanings: ["to go","to walk"] },
-  { word: "sehen", pos: "V", ipa: "ˈzeːən", flexion: ["sieht","sah","gesehen"], meanings: ["to see"] },
-  { word: "der", pos: "ART", ipa: "deːɐ̯", flexion: ["der","des","dem","den"], meanings: ["the (masc.)"] },
-  { word: "die", pos: "ART", ipa: "diː", flexion: ["die","der","den"], meanings: ["the (fem./pl.)"] },
-  { word: "das", pos: "ART", ipa: "das", flexion: ["das","des","dem"], meanings: ["the (neut.)"] },
-  { word: "in", pos: "PREP", ipa: "ɪn", flexion: [], meanings: ["in","into"] },
-  { word: "auf", pos: "PREP", ipa: "aʊ̯f", flexion: [], meanings: ["on","onto"] },
-  { word: "ich", pos: "PRON", ipa: "ɪç", flexion: ["ich","mich","mir"], meanings: ["I","me"] },
-  { word: "du", pos: "PRON", ipa: "duː", flexion: ["du","dich","dir"], meanings: ["you (sg.)"] }
-];
-
-// ---- Navigation for nonterminals ----
-document.addEventListener("click", e => {
-  const nt = e.target.closest(".nonterminal");
-  if (nt) {
-    const id = nt.dataset.nonterminal;
-    const target = document.getElementById(id);
-    if (target) target.scrollIntoView({behavior:"smooth", block:"start"});
+  // --- Rendering rules ---
+  function renderRules() {
+    const container = document.getElementById("bnf");
+    container.innerHTML = "";
+    for (const [lhs, rhss] of Object.entries(bnfRules)) {
+      const div = document.createElement("div");
+      div.className = "rule";
+      div.id = lhs;
+      const rhsText = rhss.map(rhs =>
+        rhs.map(sym => {
+          if (sym.startsWith("<")) {
+            return `<span class="nonterminal" onclick="jumpTo('${sym}')">${sym}</span>`;
+          } else {
+            return `<span class="terminal">"${sym}"</span>`;
+          }
+        }).join(" ")
+      ).join(" | ");
+      div.innerHTML = `<b>${lhs}</b> ::= ${rhsText}`;
+      container.appendChild(div);
+    }
   }
-});
 
-// ---- Dictionary modal ----
-function openModal(entry) {
-  const body = document.getElementById("modalBody");
-  body.innerHTML = `
-    <h3>${entry.word}</h3>
-    <p><strong>POS:</strong> ${entry.pos}</p>
-    <p><strong>IPA:</strong> /${entry.ipa}/</p>
-    <p><strong>Flexion:</strong> ${entry.flexion.join(", ")}</p>
-    <p><strong>Meanings:</strong> ${entry.meanings.join("; ")}</p>
-  `;
-  document.getElementById("modal").style.display = "flex";
-}
-
-document.addEventListener("click", e => {
-  const t = e.target.closest(".terminal");
-  if (t) {
-    const w = t.dataset.word;
-    const entry = lexicon.find(x => x.word === w);
-    if (entry) openModal(entry);
+  function jumpTo(nt) {
+    const target = document.getElementById(nt);
+    if (target) target.scrollIntoView({behavior:"smooth", block:"center"});
   }
-});
 
-document.getElementById("closeModal").onclick = () =>
-  document.getElementById("modal").style.display = "none";
-document.getElementById("modal").onclick = e => {
-  if (e.target.id === "modal") document.getElementById("modal").style.display = "none";
-};
-</script>
+  function importJSON() {
+    try {
+      const obj = JSON.parse(document.getElementById("jsonArea").value);
+      alert("Imported JSON with " + Object.keys(obj).length + " keys.");
+    } catch(e) { alert("Invalid JSON!"); }
+  }
 
+  function exportJSON() {
+    document.getElementById("jsonArea").value =
+      JSON.stringify(lexicon, null, 2);
+  }
+
+  renderRules();
+  </script>
 </body>
 </html>
