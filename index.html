@@ -104,14 +104,18 @@
 /* Sample lexicon (small) — replace or import a larger JSON via textarea. Each entry: {word,ipa,pos,flexions,meanings} */
 
 let lexicon;
+function loadLexicon() {
 fetch('lexicon.json')
     .then(response => response.json())
     .then(data => {
-	    lexicon = data;
+	    lexicon = data.data;
     })
     .catch(error => {
         alert('Error:', error);
     });
+}
+
+await loadLexicon();
 
 function renderIndex(){
   const idx = document.getElementById('indexList'); idx.innerHTML='';
