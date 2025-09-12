@@ -1,3 +1,4 @@
+{"data":
 [
   {"word":"der","ipa":"deːɐ̯","pos":"DET","flexions":"Masc.Def.Art","meanings":["the (masc)"]},
   {"word":"die","ipa":"diː","pos":"DET","flexions":"Fem/Pl.Def.Art","meanings":["the (fem/pl)"]},
@@ -357,4 +358,5 @@
   {"word":"Geburtstag","ipa":"ɡəˈbuːɐ̯tstaːk","pos":"N","flexions":"Sing: Geburtstag; Plural: Geburtstage","meanings":["birthday"]},
   {"word":"Weihnachten","ipa":"vaɪnaxtən","pos":"N","flexions":"Sing: Weihnachten","meanings":["Christmas"]},
   {"word":"Geschichte","ipa":"ɡəˈʃɪçtə","pos":"N","flexions":"Sing: Geschichte; Plural: Geschichten","meanings":["history","story"]}
-]
+]}
+
