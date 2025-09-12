@@ -127,7 +127,7 @@ function renderIndex(){
 
 function renderLex(){
   const el = document.getElementById('lexList'); el.innerHTML='';
-  lexicon.slice(0,400).forEach(entry=>{
+  lexicon.forEach(entry=>{
     const d = document.createElement('div'); d.className='lex-row';
     d.innerHTML = `<div style="flex:1"><a class="terminal" data-w="${entry.word}">${entry.word}</a> <span style="opacity:.7">(${entry.pos})</span></div><div class="flexions">${entry.flexions||''}</div>`;
     el.appendChild(d);
