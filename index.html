@@ -85,7 +85,7 @@ function loadLexicon(){
     .then(r=>r.ok ? r.json() : Promise.reject('Network error'))
     .then(d=>{
         lexicon = d.data || [];
-        //renderIndex();
+        renderIndex();
         renderLex();
     })
     .catch(e=>{ console.error(e); lexicon=[]; renderIndex(); renderLex(); });
@@ -115,6 +115,7 @@ function renderCFG(){
         const rhs = rule.productions.map(seq=>{
             return seq.map(s=>{
                 if(typeof s==='string'){
+                    // Fix: Check if it's a nonterminal by looking for angle brackets
                     if(s.startsWith('<') && s.endsWith('>')){
                         return `<span class="nonterm" data-n="${s.slice(1,-1)}">${s}</span>`;
                     } else {
@@ -134,6 +135,38 @@ function renderCFG(){
         area.appendChild(div);
     });
 }
+
+// Render CFG into BNF area
+/*function renderCFG(){
+    const area = document.getElementById('bnfArea');
+    if(!area) return;
+    area.innerHTML='';
+    cfg.forEach(rule=>{
+        const div = document.createElement('div');
+        div.className='bnf-rule';
+        div.id = rule.nonterminal;
+        const rhs = rule.productions.map(seq=>{
+            return seq.map(s=>{
+                if(typeof s==='string'){
+                    if(s.startsWith('<') && s.endsWith('>')){
+                        return `<span class="nonterm" data-n="${s.slice(1,-1)}">${s}</span>`;
+                    } else {
+                        return `<span class="terminal" data-w="${s}">${s}</span>`;
+                    }
+                } else if(s.optional){
+                    return `[<span class="nonterm" data-n="${s.optional}">${s.optional}</span>]`;
+                } else if(s.repeat){
+                    return `{<span class="nonterm" data-n="${s.repeat}">${s.repeat}</span>}`;
+                } else if(s.anyOf){
+                    return `(${s.anyOf.map(a=>'<span class="nonterm" data-n="'+a+'">'+a+'</span>').join(' | ')})`;
+                }
+                return s;
+            }).join(' ');
+        }).join(' | ');
+        div.innerHTML = `<span class="nonterm" data-n="${rule.nonterminal}">&lt;${rule.nonterminal}&gt;</span> ::= ${rhs}`;
+        area.appendChild(div);
+    });
+}*/
 
 // Render lexicon sidebar
 function renderLex(){
