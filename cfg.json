@@ -1,0 +1,168 @@
+{"data":
+[
+  {
+    "nonterminal": "<sentence>",
+    "productions": [
+      ["<main-clause>"],
+      ["<main-clause>", "<subordinate-clause>"],
+      ["<compound-sentence>"],
+      ["<question>"],
+      ["<imperative>"]
+    ]
+  },
+  {
+    "nonterminal": "<main-clause>",
+    "productions": [
+      ["<noun-phrase>", "<verb-phrase>"],
+      ["<verb-phrase>", "<noun-phrase>"]
+    ]
+  },
+  {
+    "nonterminal": "<subordinate-clause>",
+    "productions": [
+      ["<subordinator>", "<noun-phrase>", "<verb-phrase>"]
+    ]
+  },
+  {
+    "nonterminal": "<compound-sentence>",
+    "productions": [
+      ["<main-clause>", "<conjunction>", "<main-clause>"]
+    ]
+  },
+  {
+    "nonterminal": "<question>",
+    "productions": [
+      ["<interrogative-pronoun>", "<verb-phrase>"],
+      ["<verb>", "<noun-phrase>", "<rest-of-clause>"]
+    ]
+  },
+  {
+    "nonterminal": "<imperative>",
+    "productions": [
+      ["<verb>", {"optional": "<noun-phrase>"}]
+    ]
+  },
+  {
+    "nonterminal": "<noun-phrase>",
+    "productions": [
+      ["<determiner>", {"repeat": "<adjective>"}, "<noun>"],
+      ["<pronoun>"]
+    ]
+  },
+  {
+    "nonterminal": "<verb-phrase>",
+    "productions": [
+      ["<verb>"],
+      ["<verb>", "<noun-phrase>"],
+      ["<verb>", "<noun-phrase>", "<prepositional-phrase>"],
+      ["<modal-verb>", "<verb>"],
+      ["<verb>", {"optional": "<negation>"}, "<noun-phrase>"]
+    ]
+  },
+  {
+    "nonterminal": "<prepositional-phrase>",
+    "productions": [
+      ["<preposition>", "<noun-phrase>"]
+    ]
+  },
+  {
+    "nonterminal": "<adjective>",
+    "productions": [
+      ["<adjective-base>"]
+    ]
+  },
+  {
+    "nonterminal": "<determiner>",
+    "productions": [
+      ["<article>"],
+      ["<possessive-pronoun>"],
+      ["<demonstrative-pronoun>"]
+    ]
+  },
+  {
+    "nonterminal": "<pronoun>",
+    "productions": [
+      ["<personal-pronoun>"],
+      ["<reflexive-pronoun>"],
+      ["<relative-pronoun>"]
+    ]
+  },
+  {
+    "nonterminal": "<verb>",
+    "productions": [
+      ["<lexical-verb>"],
+      ["<auxiliary-verb>"]
+    ]
+  },
+  {
+    "nonterminal": "<modal-verb>",
+    "productions": [
+      ["<lexical-modal>"]
+    ]
+  },
+  {
+    "nonterminal": "<subordinator>",
+    "productions": [
+      ["weil"],
+      ["dass"],
+      ["ob"],
+      ["wenn"]
+    ]
+  },
+  {
+    "nonterminal": "<conjunction>",
+    "productions": [
+      ["und"],
+      ["oder"],
+      ["aber"],
+      ["denn"]
+    ]
+  },
+  {
+    "nonterminal": "<negation>",
+    "productions": [
+      ["nicht"],
+      ["kein"]
+    ]
+  },
+  {
+    "nonterminal": "<interrogative-pronoun>",
+    "productions": [
+      ["wer"],
+      ["was"],
+      ["wo"],
+      ["wann"],
+      ["warum"],
+      ["wie"]
+    ]
+  },
+  {
+    "nonterminal": "<article>",
+    "productions": [
+      ["der"],
+      ["die"],
+      ["das"],
+      ["ein"],
+      ["eine"]
+    ]
+  },
+  {
+    "nonterminal": "<preposition>",
+    "productions": [
+      ["auf"],
+      ["unter"],
+      ["in"],
+      ["mit"],
+      ["von"],
+      ["zu"]
+    ]
+  },
+  {
+    "nonterminal": "<relative-pronoun>",
+    "productions": [
+      ["der"],
+      ["die"],
+      ["das"]
+    ]
+  }
+]}
