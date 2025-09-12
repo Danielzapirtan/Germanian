@@ -100,88 +100,165 @@
     </div>
     <div style="margin-top:8px" id="modalBody"></div>
   </div>
-</div><script>
-/* Sample lexicon (small) — replace or import a larger JSON via textarea. Each entry: {word,ipa,pos,flexions,meanings} */
+</div>
+<script>
 
-let lexicon;
+let lexicon = []; // Initialize as empty array
+
 function loadLexicon() {
-fetch('lexicon.json')
-    .then(response => response.json())
-    .then(data => {
-	    lexicon = data.data;
-    })
-    .catch(error => {
-        alert('Error:', error);
+    fetch('lexicon.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            lexicon = data.data || [];
+            renderIndex(); 
+            renderLex();
+        })
+        .catch(error => {
+            console.error('Error loading lexicon:', error);
+            lexicon = [];
+            renderIndex();
+            renderLex();
+        });
+}
+
+function renderIndex(){
+    const idx = document.getElementById('indexList');
+    if (!idx) return;
+    idx.innerHTML='';
+    const nonterms = Array.from(document.querySelectorAll('.nonterm')).map(n=>n.dataset.n);
+    const uniqueNonterms = [...new Set(nonterms)]; // Remove duplicates
+    uniqueNonterms.forEach(n=>{
+        const el = document.createElement('div');
+        el.innerHTML = `<a class="nonterm" data-n="${n}" style="cursor:pointer;color:var(--accent);text-decoration:underline">&lt;${n}&gt;</a>`;
+        idx.appendChild(el);
     });
 }
 
-await loadLexicon();
-
-function renderIndex(){
-  const idx = document.getElementById('indexList'); idx.innerHTML='';
-  const nonterms = Array.from(document.querySelectorAll('.nonterm')).map(n=>n.dataset.n);
-  nonterms.forEach(n=>{
-    const el = document.createElement('div'); el.innerHTML = `<a class="nonterm" data-n="${n}">${n}</a>`; idx.appendChild(el);
-  });
-}
-
 function renderLex(){
-  const el = document.getElementById('lexList'); el.innerHTML='';
-  lexicon.forEach(entry=>{
-    const d = document.createElement('div'); d.className='lex-row';
-    d.innerHTML = `<div style="flex:1"><a class="terminal" data-w="${entry.word}">${entry.word}</a> <span style="opacity:.7">(${entry.pos})</span></div><div class="flexions">${entry.flexions||''}</div>`;
-    el.appendChild(d);
-  });
+    const el = document.getElementById('lexList');
+    if (!el) return;
+    el.innerHTML='';
+    lexicon.forEach(entry=>{
+        const d = document.createElement('div');
+        d.className='lex-row';
+        d.innerHTML = `<div style="flex:1"><a class="terminal" data-w="${entry.word}" style="cursor:pointer;color:#9fe3c1">${entry.word}</a> <span style="opacity:.7">(${entry.pos})</span></div><div class="flexions">${entry.flexions||''}</div>`;
+        el.appendChild(d);
+    });
 }
 
 function showModal(word){
-  const m = document.getElementById('modal'); m.classList.add('open');
-  const t = document.getElementById('modalTitle'); const b = document.getElementById('modalBody');
-  const ent = lexicon.find(e=>e.word===word);
-  if(!ent){ t.textContent = word; b.innerHTML = '<div style="opacity:.7">No dictionary entry found in lexicon.</div>'; return }
-  t.textContent = `${ent.word} — /${ent.ipa||''}/`;
-  b.innerHTML = `<div style="margin-top:8px"><strong>Part of speech:</strong> ${ent.pos||''}</div>
-                 <div style="margin-top:8px"><strong>Flexions:</strong><div class="flexions" style="margin-top:6px">${ent.flexions||'—'}</div></div>
-                 <div style="margin-top:8px"><strong>Meanings:</strong><ol>${(ent.meanings||[]).map(m=>`<li>${m}</li>`).join('')}</ol></div>`;
+    const m = document.getElementById('modal');
+    const t = document.getElementById('modalTitle');
+    const b = document.getElementById('modalBody');
+    if (!m || !t || !b) return;
+    
+    m.classList.add('open');
+    const ent = lexicon.find(e=>e.word===word);
+    if(!ent){ 
+        t.textContent = word; 
+        b.innerHTML = '<div style="opacity:.7">No dictionary entry found in lexicon.</div>'; 
+        return; 
+    }
+    t.textContent = `${ent.word} — /${ent.ipa||''}/`;
+    b.innerHTML = `<div style="margin-top:8px"><strong>Part of speech:</strong> ${ent.pos||''}</div>
+                   <div style="margin-top:8px"><strong>Flexions:</strong><div class="flexions" style="margin-top:6px">${ent.flexions||'—'}</div></div>
+                   <div style="margin-top:8px"><strong>Meanings:</strong><ol>${(ent.meanings||[]).map(m=>`<li>${m}</li>`).join('')}</ol></div>`;
 }
 
-// events
-renderIndex(); renderLex();
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    loadLexicon();
+    
+    document.addEventListener('click', function(e){
+        if(e.target.matches('.nonterm')){
+            const n = e.target.dataset.n;
+            const el = document.getElementById(n);
+            if(el){ 
+                el.scrollIntoView({behavior:'smooth',block:'center'}); 
+                el.style.boxShadow='0 0 0 3px rgba(124,58,237,0.12)'; 
+                setTimeout(()=>el.style.boxShadow='none',600);
+            }
+        }
+        if(e.target.matches('.terminal')){
+            const w = e.target.dataset.w; 
+            showModal(w);
+        }
+    });
 
-document.addEventListener('click', e=>{
-  if(e.target.matches('.nonterm')){
-    const n = e.target.dataset.n;
-    const el = document.getElementById(n);
-    if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.boxShadow='0 0 0 3px rgba(124,58,237,0.12)'; setTimeout(()=>el.style.boxShadow='none',600);
+    // Close modal button
+    const closeBtn = document.getElementById('close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function(){
+            const modal = document.getElementById('modal');
+            if (modal) modal.classList.remove('open');
+        });
     }
-  }
-  if(e.target.matches('.terminal')){
-    const w = e.target.dataset.w; showModal(w);
-  }
+
+    // Search functionality
+    const search = document.getElementById('search');
+    const clearBtn = document.getElementById('clear');
+    
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function(){
+            if (search) search.value = '';
+            search.dispatchEvent(new Event('input'));
+        });
+    }
+    
+    if (search) {
+        search.addEventListener('input', function(){
+            const q = this.value.trim().toLowerCase();
+            // Reset all first
+            document.querySelectorAll('.bnf-rule').forEach(r=>{ 
+                r.style.display='block'; 
+                r.style.opacity=1; 
+            });
+            document.querySelectorAll('.nonterm').forEach(nt=>{ 
+                nt.style.background='none'; 
+            });
+            
+            if(!q) return;
+            
+            // Highlight matching nonterms
+            document.querySelectorAll('.nonterm').forEach(nt=>{ 
+                if(nt.dataset.n.toLowerCase().includes(q)) 
+                    nt.style.background='rgba(124,58,237,0.12)'; 
+            });
+            
+            // Hide rules that don't include query
+            document.querySelectorAll('.bnf-rule').forEach(r=>{
+                const text = r.textContent.toLowerCase(); 
+                if(!text.includes(q)) r.style.display='none';
+            });
+        });
+    }
+
+    // Import lexicon
+    const importBtn = document.getElementById('importLex');
+    if (importBtn) {
+        importBtn.addEventListener('click', function(){
+            const txtArea = document.getElementById('lexImport');
+            if (!txtArea) return;
+            
+            const txt = txtArea.value.trim(); 
+            if(!txt) return alert('Paste a JSON array of lexicon entries first');
+            
+            try{ 
+                const arr = JSON.parse(txt); 
+                if(!Array.isArray(arr)) throw new Error('Not an array'); 
+                lexicon = arr.concat(lexicon); 
+                renderLex(); 
+                alert('Imported ' + arr.length + ' entries (now '+lexicon.length+' total)'); 
+            }
+            catch(err){ alert('JSON parse error: '+err.message) }
+        });
+    }
 });
-
-document.getElementById('close').addEventListener('click', ()=>{document.getElementById('modal').classList.remove('open')});
-
-// search
-const search = document.getElementById('search'); document.getElementById('clear').addEventListener('click', ()=>{search.value=''; search.dispatchEvent(new Event('input'))});
-search.addEventListener('input', ()=>{
-  const q = search.value.trim().toLowerCase();
-  // highlight matching nonterms
-  document.querySelectorAll('.bnf-rule').forEach(r=>{ r.style.display='block'; r.style.opacity=1 });
-  if(!q) return;
-  document.querySelectorAll('.nonterm').forEach(nt=>{ if(nt.dataset.n.toLowerCase().includes(q)) nt.style.background='rgba(124,58,237,0.12)'; else nt.style.background='none'; });
-  // hide rules that don't include query
-  document.querySelectorAll('.bnf-rule').forEach(r=>{
-    const text = r.textContent.toLowerCase(); if(!text.includes(q)) r.style.display='none';
-  });
-});
-
-// import lexicon
-document.getElementById('importLex').addEventListener('click', ()=>{
-  const txt = document.getElementById('lexImport').value.trim(); if(!txt) return alert('Paste a JSON array of lexicon entries first');
-  try{ const arr = JSON.parse(txt); if(!Array.isArray(arr)) throw new Error('Not an array'); lexicon = arr.concat(lexicon); renderLex(); alert('Imported ' + arr.length + ' entries (now '+lexicon.length+' total)'); }
-  catch(err){ alert('JSON parse error: '+err.message) }
-});
-
-</script></body>
+</script>
+</body>
 </html>
