@@ -102,6 +102,7 @@
   </div>
 </div><script>
 /* Sample lexicon (small) — replace or import a larger JSON via textarea. Each entry: {word,ipa,pos,flexions,meanings} */
+
 let lexicon = [
   {"word":"der","ipa":"deːɐ̯","pos":"DET","flexions":"Masc.Def.Art","meanings":["the (masc)"]},
   {"word":"die","ipa":"diː","pos":"DET","flexions":"Fem/Pl.Def.Art","meanings":["the (fem/pl)"]},
@@ -275,39 +276,6 @@ let lexicon = [
   {"word":"Mantel","ipa":"mantəl","pos":"N","flexions":"Sing: Mantel; Plural: Mäntel","meanings":["coat"]},
   {"word":"Schuh","ipa":"ʃuː","pos":"N","flexions":"Sing: Schuh; Plural: Schuhe","meanings":["shoe"]},
   {"word":"Socke","ipa":"zɔkə","pos":"N","flexions":"Sing: Socke; Plural: Socken","meanings":["sock"]}
-]
-let lexicon = [
-  {word:'der',ipa:'deːɐ̯',pos:'DET',flexions:'Masc.Def.Art',meanings:['the (masc)']},
-  {word:'die',ipa:'diː',pos:'DET',flexions:'Fem/Pl.Def.Art',meanings:['the (fem/pl)']},
-  {word:'das',ipa:'das',pos:'DET',flexions:'Neu.Def.Art',meanings:['the (neut)']},
-  {word:'ein',ipa:'aɪn',pos:'DET',flexions:'Indef.Art',meanings:['a','one (masc/neut)']},
-  {word:'Mann',ipa:'man',pos:'N',flexions:'Sing: Mann; Plural: Männer',meanings:['man','male']},
-  {word:'Frau',ipa:'fraʊ',pos:'N',flexions:'Sing: Frau; Plural: Frauen',meanings:['woman','Mrs.']},
-  {word:'Haus',ipa:'haʊs',pos:'N',flexions:'Sing: Haus; Plural: Häuser',meanings:['house']},
-  {word:'Kind',ipa:'kɪnt',pos:'N',flexions:'Sing: Kind; Plural: Kinder',meanings:['child']},
-  {word:'Auto',ipa:'aʊto',pos:'N',flexions:'Sing: Auto; Plural: Autos',meanings:['car']},
-  {word:'ist',ipa:'ɪst',pos:'V',flexions:'3sg Präs: ist; Inf: sein',meanings:['is (to be)']},
-  {word:'hat',ipa:'hat',pos:'V',flexions:'3sg Präs: hat; Inf: haben',meanings:['has (to have)']},
-  {word:'geht',ipa:'geːt',pos:'V',flexions:'3sg Präs: geht; Inf: gehen',meanings:['goes']},
-  {word:'sieht',ipa:'ziːt',pos:'V',flexions:'3sg Präs: sieht; Inf: sehen',meanings:['sees']},
-  {word:'nimmt',ipa:'nɪmt',pos:'V',flexions:'3sg Präs: nimmt; Inf: nehmen',meanings:['takes']},
-  {word:'in',ipa:'ɪn',pos:'P',flexions:'prep + Akk/Dat',meanings:['in']},
-  {word:'auf',ipa:'aʊf',pos:'P',flexions:'prep + Akk/Dat',meanings:['on','onto']},
-  {word:'mit',ipa:'mɪt',pos:'P',flexions:'prep + Dat',meanings:['with']},
-  {word:'von',ipa:'fɔn',pos:'P',flexions:'prep + Dat',meanings:['from','of']},
-  {word:'ich',ipa:'ɪç',pos:'PRON',flexions:'1sg',meanings:['I']},
-  {word:'du',ipa:'duː',pos:'PRON',flexions:'2sg',meanings:['you (singular)']},
-  {word:'er',ipa:'eːɐ̯',pos:'PRON',flexions:'3sg masc',meanings:['he']},
-  {word:'sie',ipa:'ziː',pos:'PRON',flexions:'3sg fem / 3pl',meanings:['she','they']},
-  {word:'wir',ipa:'viːɐ̯',pos:'PRON',flexions:'1pl',meanings:['we']},
-  {word:'wer',ipa:'veːɐ̯',pos:'Q',flexions:'interrog',meanings:['who']},
-  {word:'was',ipa:'vas',pos:'Q',flexions:'interrog',meanings:['what']},
-  {word:'wo',ipa:'voː',pos:'Q',flexions:'interrog',meanings:['where']},
-  {word:'warum',ipa:'vaˈʁʊm',pos:'Q',flexions:'interrog',meanings:['why']},
-  {word:'schön',ipa:'ʃøːn',pos:'ADJ',flexions:'Pos: schön; Komp: schöner; Sup: am schönsten',meanings:['beautiful','nice']},
-  {word:'alt',ipa:'alt',pos:'ADJ',flexions:'Pos: alt; Komp: älter',meanings:['old']},
-  {word:'neu',ipa:'nɔʏ',pos:'ADJ',flexions:'Pos: neu; Komp: neuer',meanings:['new']},
-  {word:'groß',ipa:'ɡroːs',pos:'ADJ',flexions:'Pos: groß; Komp: größer',meanings:['big','tall']}
 ];
 
 function renderIndex(){
