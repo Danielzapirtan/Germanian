@@ -85,7 +85,7 @@ function loadLexicon(){
     .then(r=>r.ok ? r.json() : Promise.reject('Network error'))
     .then(d=>{
         lexicon = d.data || [];
-        renderIndex();
+        //renderIndex();
         renderLex();
     })
     .catch(e=>{ console.error(e); lexicon=[]; renderIndex(); renderLex(); });
