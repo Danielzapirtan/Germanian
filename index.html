@@ -1,116 +1,206 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
+<html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>German BNF Grammar Explorer</title>
-  <style>
-    body { font-family: sans-serif; line-height: 1.5; padding: 1em; }
-    h1 { text-align: center; }
-    .rule { margin: 0.4em 0; }
-    .nonterminal { color: darkblue; cursor: pointer; font-weight: bold; }
-    .terminal { color: darkgreen; }
-    textarea { width: 100%; height: 8em; margin-top: 1em; }
-    button { margin: 0.3em; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>German BNF — CodePen-ready</title>
+<style>
+  :root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;color-scheme:dark}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#071021 0%,#071428 100%);font-family:Inter, Roboto, Arial, sans-serif;color:#e6eef8}
+  .wrap{max-width:1100px;margin:28px auto;padding:20px}
+  header{display:flex;gap:16px;align-items:center}
+  h1{margin:.2rem 0;font-size:1.4rem}
+  .grid{display:grid;grid-template-columns:360px 1fr;gap:16px;margin-top:16px}
+  .sidebar{background:var(--card);padding:12px;border-radius:12px;overflow:auto;max-height:75vh}
+  .main{background:rgba(255,255,255,0.02);padding:12px;border-radius:12px;max-height:75vh;overflow:auto}
+  .bnf-rule{margin:8px 0;padding:8px;border-radius:8px}
+  .nonterm{color:var(--accent);cursor:pointer;text-decoration:underline}
+  .terminal{color:#9fe3c1;cursor:pointer}
+  .search{display:flex;gap:8px;margin-bottom:8px}
+  input[type=text]{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+  button{padding:8px 10px;border-radius:8px;border:0;background:var(--accent);color:#041121;cursor:pointer}
+  .modal{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:all .18s}
+  .modal.open{visibility:visible;opacity:1}
+  .card{background:#031028;padding:18px;border-radius:12px;max-width:720px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+  .lex-row{display:flex;gap:12px;align-items:flex-start;margin:8px 0}
+  .flexions{font-family:monospace;background:#021827;padding:8px;border-radius:8px}
+  footer{margin-top:12px;font-size:0.8rem;color:#9fb0c9}
+  .bnf-title{font-weight:600;margin:6px 0}
+  .defs{padding-left:10px}
+  .kbd{font-family:monospace;background:#021827;padding:2px 6px;border-radius:6px}
+</style>
 </head>
 <body>
-  <h1>German Grammar BNF Explorer</h1>
-  <p>Click a <span class="nonterminal">nonterminal</span> to jump to its definition. Import/export JSON below.</p>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>German BNF (CodePen-ready)</h1>
+      <div style="font-size:.9rem;color:#9fb0c9">Click nonterminals to jump to definitions. Click terminals to open dictionary entries (sample lexicon included).</div>
+    </div>
+  </header>  <div class="grid">
+    <aside class="sidebar">
+      <div class="search">
+        <input id="search" placeholder="Find nonterminal or word (type &quot;NP&quot; or &quot;Haus&quot;)" />
+        <button id="clear">Clear</button>
+      </div>
+      <div class="bnf-index">
+        <div class="bnf-title">Index (nonterminals)</div>
+        <div id="indexList"></div>
+      </div>
+      <hr style="opacity:.06;margin:10px 0">
+      <div class="bnf-title">Lexicon (sample)</div>
+      <div id="lexList" style="max-height:36vh;overflow:auto"></div>
+      <hr style="opacity:.06;margin:10px 0">
+      <div style="font-size:.85rem">Tips: paste a larger JSON lexicon into the textarea below to extend to ~2k terminals. The format is an array of objects: {"word":"Haus","ipa":"haʊs","pos":"N","flexions":"Singular: Haus; Plural: Häuser","meanings":["house","building"]}</div>
+      <textarea id="lexImport" placeholder='Paste JSON lexicon here (array)' style="width:100%;height:90px;margin-top:8px;background:#020b12;color:#cde6f0;border-radius:6px;padding:8px"></textarea>
+      <button id="importLex">Import lexicon</button>
+    </aside><main class="main">
+  <section id="bnfArea">
+    <div class="bnf-rule" id="S"><span class="nonterm" data-n="S">&lt;S&gt;</span> ::= &lt;NP&gt; &lt;VP&gt; | &lt;VP&gt;</div>
+    <div class="bnf-rule" id="NP"><span class="nonterm" data-n="NP">&lt;NP&gt;</span> ::= &lt;Det&gt; &lt>NN&gt; | &lt>NN&gt; | &lt;NP&gt; &lt;PP&gt;</div>
+    <div class="bnf-rule" id="VP"><span class="nonterm" data-n="VP">&lt;VP&gt;</span> ::= &lt;V&gt; | &lt;V&gt; &lt;NP&gt; | &lt;V&gt; &lt;PP&gt; | &lt;V&gt; &lt;NP&gt; &lt;PP&gt;</div>
+    <div class="bnf-rule" id="Det"><span class="nonterm" data-n="Det">&lt;Det&gt;</span> ::= <span class="terminal" data-w="der">der</span> | <span class="terminal" data-w="die">die</span> | <span class="terminal" data-w="das">das</span> | <span class="terminal" data-w="ein">ein</span> | <span class="terminal" data-w="eine">eine</span>
+    </div>
 
-  <div id="bnf"></div>
+    <div class="bnf-rule" id="NN"><span class="nonterm" data-n="NN">&lt;NN&gt;</span> ::= <span class="terminal" data-w="Mann">Mann</span> | <span class="terminal" data-w="Frau">Frau</span> | <span class="terminal" data-w="Haus">Haus</span> | <span class="terminal" data-w="Kind">Kind</span> | <span class="terminal" data-w="Auto">Auto</span>
+    </div>
 
-  <h2>Lexicon Import/Export</h2>
-  <textarea id="jsonArea"></textarea><br>
-  <button onclick="importJSON()">Import JSON</button>
-  <button onclick="exportJSON()">Export JSON</button>
+    <div class="bnf-rule" id="V"><span class="nonterm" data-n="V">&lt;V&gt;</span> ::= <span class="terminal" data-w="ist">ist</span> | <span class="terminal" data-w="hat">hat</span> | <span class="terminal" data-w="geht">geht</span> | <span class="terminal" data-w="sieht">sieht</span> | <span class="terminal" data-w="nimmt">nimmt</span>
+    </div>
 
-  <script>
-  // --- Embedded Lexicon (~550 words) ---
-  const lexicon = {
-    "lexicon": [
-      "abandon","abend","aber","abfahren","Abflug","abgeben","abhängen","abholen","Abitur","abkürzen",
-      "ablehnen","abmachen","abnehmen","abreißen","Absatz","Abschnitt","absolut","abstimmen","Abteilung","abwarten",
-      "achten","Adresse","Affe","Aktie","aktiv","Akzent","Alkohol","alle","allgemein","allmählich",
-      "als","also","alt","Alter","Amt","anbieten","ändern","anders","anfangen","Angabe",
-      "Angebot","angreifen","Angst","ankommen","Anlage","Anlass","Anruf","Antwort","Anzeige","anziehen",
-      "Apfel","Appetit","Arbeit","arbeiten","Arbeiter","Arm","Armee","Art","Artikel","Arzt",
-      "Aspekt","Atmen","Atmosphäre","auch","aufbauen","aufdrehen","auffallen","Aufgabe","aufhalten","aufheben",
-      "aufhören","aufmachen","aufpassen","aufräumen","aufrufen","aufstehen","Auftrag","aufwachen","aufzeigen","Augenblick",
-      "August","ausarbeiten","Ausbildung","Ausdruck","ausfallen","Ausflug","Ausgabe","ausgehen","ausmachen","Ausrede",
-      "Aussage","ausschalten","Ausschnitt","aussehen","Aussprache","aussteigen","austauschen","auswählen","Auto","Autobahn",
-      "Bach","Baden","Bahnhof","Bahnsteig","Bald","Ball","Bank","Bar","bauen","Baum",
-      "beachten","Beamter","beantworten","Becher","Bedarf","bedeuten","Bedingung","bedienen","Beere","Begleiter",
-      "behalten","beißen","Beispiel","Beitrag","bekannt","bekommen","beliebt","bemerkbar","benutzen","Beobachtung",
-      "beraten","bereit","Berg","Bericht","beruhigen","Bescheid","beschreiben","besetzen","besichtigen","besitzen",
-      "Besonderheit","besonders","besorgen","bestätigen","bestehen","bestimmen","Besuch","beten","betrachten","Betrieb",
-      "beugen","bevor","bezahlen","Beziehung","Bibliothek","Bier","Bild","Bildung","Billig","binden",
-      "Biologie","Birne","bisschen","Bitte","Bitter","Blatt","blau","Blech","Blick","Blume",
-      "Blut","Boden","Bogen","Bohne","Bombe","Boot","Bord","Böse","Brief","bringen",
-      "Brot","Bruder","Brücke","Buch","Buchstabe","bunt","Bus","Butter","CD","Chemie",
-      "Chef","China","Chor","da","dabei","dach","dafür","dagegen","daher","dahin",
-      "damals","damit","danach","danke","dann","daran","darauf","daraus","darin","darstellen",
-      "das","dass","davon","dazu","decken","definieren","denken","denn","der","deren",
-      "deshalb","desto","Deutsch","Dezember","die","Dichter","dick","Dienst","Ding","dort",
-      "draußen","drehen","drei","drin","drücken","du","durch","dürfen","dunkel","dürfen"
-    ]
-  };
+    <div class="bnf-rule" id="AdjP"><span class="nonterm" data-n="AdjP">&lt;AdjP&gt;</span> ::= &lt;Adj&gt; | &lt;Adj&gt; &lt;AdjP&gt;</div>
+    <div class="bnf-rule" id="Adj"><span class="nonterm" data-n="Adj">&lt;Adj&gt;</span> ::= <span class="terminal" data-w="schön">schön</span> | <span class="terminal" data-w="alt">alt</span> | <span class="terminal" data-w="neu">neu</span> | <span class="terminal" data-w="groß">groß</span></div>
 
-  // --- Expanded BNF rules ---
-  const bnfRules = {
-    "<S>": [["<NP>", "<VP>"]],
-    "<NP>": [["<Det>", "<N>"], ["<Det>", "<AdjP>", "<N>"], ["<Pron>"]],
-    "<VP>": [["<V>"], ["<V>", "<NP>"], ["<V>", "<NP>", "<PP>"]],
-    "<PP>": [["<Prep>", "<NP>"]],
-    "<AdjP>": [["<Adj>"], ["<Adv>", "<Adj>"]],
-    "<Det>": [["der"],["die"],["das"],["ein"],["eine"]],
-    "<N>": [["Mann"],["Frau"],["Kind"],["Arbeit"],["Haus"],["Baum"]],
-    "<V>": [["geht"],["isst"],["arbeitet"],["sieht"],["hat"],["macht"]],
-    "<Pron>": [["ich"],["du"],["er"],["sie"],["wir"],["ihr"],["Sie"]],
-    "<Prep>": [["mit"],["in"],["auf"],["an"],["unter"]],
-    "<Adj>": [["schön"],["groß"],["klein"],["neu"],["alt"]],
-    "<Adv>": [["sehr"],["nicht"],["oft"],["immer"],["gestern"]]
-  };
+    <div class="bnf-rule" id="PP"><span class="nonterm" data-n="PP">&lt;PP&gt;</span> ::= &lt;P&gt; &lt;NP&gt;</div>
+    <div class="bnf-rule" id="P"><span class="nonterm" data-n="P">&lt;P&gt;</span> ::= <span class="terminal" data-w="in">in</span> | <span class="terminal" data-w="auf">auf</span> | <span class="terminal" data-w="mit">mit</span> | <span class="terminal" data-w="von">von</span>
+    </div>
 
-  // --- Rendering rules ---
-  function renderRules() {
-    const container = document.getElementById("bnf");
-    container.innerHTML = "";
-    for (const [lhs, rhss] of Object.entries(bnfRules)) {
-      const div = document.createElement("div");
-      div.className = "rule";
-      div.id = lhs;
-      const rhsText = rhss.map(rhs =>
-        rhs.map(sym => {
-          if (sym.startsWith("<")) {
-            return `<span class="nonterminal" onclick="jumpTo('${sym}')">${sym}</span>`;
-          } else {
-            return `<span class="terminal">"${sym}"</span>`;
-          }
-        }).join(" ")
-      ).join(" | ");
-      div.innerHTML = `<b>${lhs}</b> ::= ${rhsText}`;
-      container.appendChild(div);
+    <div class="bnf-rule" id="Pron"><span class="nonterm" data-n="Pron">&lt;Pron&gt;</span> ::= <span class="terminal" data-w="ich">ich</span> | <span class="terminal" data-w="du">du</span> | <span class="terminal" data-w="er">er</span> | <span class="terminal" data-w="sie">sie</span> | <span class="terminal" data-w="wir">wir</span>
+    </div>
+
+    <div class="bnf-rule" id="SentenceTypes"><span class="nonterm" data-n="SentenceTypes">&lt;SentenceTypes&gt;</span> ::= &lt;S&gt; | &lt;Q&gt; | &lt;Imp&gt;</div>
+    <div class="bnf-rule" id="Q"><span class="nonterm" data-n="Q">&lt;Q&gt;</span> ::= <span class="terminal" data-w="wer">wer</span> | <span class="terminal" data-w="was">was</span> | <span class="terminal" data-w="wo">wo</span> | <span class="terminal" data-w="warum">warum</span>
+    </div>
+
+    <div style="margin-top:12px;font-size:.95rem;color:#9fb0c9">This BNF is intentionally compact. Expand rules or the lexicon as needed — the_import area on the left accepts a JSON array of lexicon objects.</div>
+  </section>
+
+  <footer>
+    <div>Export: copy the whole HTML into a new CodePen (HTML panel). The script is self-contained (no external servers). To reach ~2k terminals, paste a lexicon JSON with ~2000 objects into the import textarea and press "Import lexicon".</div>
+  </footer>
+</main>
+
+  </div>
+</div><!-- Modal for dictionary entries --><div class="modal" id="modal">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div id="modalTitle" style="font-size:1.1rem;font-weight:600"></div>
+      <button id="close">Close</button>
+    </div>
+    <div style="margin-top:8px" id="modalBody"></div>
+  </div>
+</div><script>
+/* Sample lexicon (small) — replace or import a larger JSON via textarea. Each entry: {word,ipa,pos,flexions,meanings} */
+let lexicon = [
+  {word:'der',ipa:'deːɐ̯',pos:'DET',flexions:'Masc.Def.Art',meanings:['the (masc)']},
+  {word:'die',ipa:'diː',pos:'DET',flexions:'Fem/Pl.Def.Art',meanings:['the (fem/pl)']},
+  {word:'das',ipa:'das',pos:'DET',flexions:'Neu.Def.Art',meanings:['the (neut)']},
+  {word:'ein',ipa:'aɪn',pos:'DET',flexions:'Indef.Art',meanings:['a','one (masc/neut)']},
+  {word:'Mann',ipa:'man',pos:'N',flexions:'Sing: Mann; Plural: Männer',meanings:['man','male']},
+  {word:'Frau',ipa:'fraʊ',pos:'N',flexions:'Sing: Frau; Plural: Frauen',meanings:['woman','Mrs.']},
+  {word:'Haus',ipa:'haʊs',pos:'N',flexions:'Sing: Haus; Plural: Häuser',meanings:['house']},
+  {word:'Kind',ipa:'kɪnt',pos:'N',flexions:'Sing: Kind; Plural: Kinder',meanings:['child']},
+  {word:'Auto',ipa:'aʊto',pos:'N',flexions:'Sing: Auto; Plural: Autos',meanings:['car']},
+  {word:'ist',ipa:'ɪst',pos:'V',flexions:'3sg Präs: ist; Inf: sein',meanings:['is (to be)']},
+  {word:'hat',ipa:'hat',pos:'V',flexions:'3sg Präs: hat; Inf: haben',meanings:['has (to have)']},
+  {word:'geht',ipa:'geːt',pos:'V',flexions:'3sg Präs: geht; Inf: gehen',meanings:['goes']},
+  {word:'sieht',ipa:'ziːt',pos:'V',flexions:'3sg Präs: sieht; Inf: sehen',meanings:['sees']},
+  {word:'nimmt',ipa:'nɪmt',pos:'V',flexions:'3sg Präs: nimmt; Inf: nehmen',meanings:['takes']},
+  {word:'in',ipa:'ɪn',pos:'P',flexions:'prep + Akk/Dat',meanings:['in']},
+  {word:'auf',ipa:'aʊf',pos:'P',flexions:'prep + Akk/Dat',meanings:['on','onto']},
+  {word:'mit',ipa:'mɪt',pos:'P',flexions:'prep + Dat',meanings:['with']},
+  {word:'von',ipa:'fɔn',pos:'P',flexions:'prep + Dat',meanings:['from','of']},
+  {word:'ich',ipa:'ɪç',pos:'PRON',flexions:'1sg',meanings:['I']},
+  {word:'du',ipa:'duː',pos:'PRON',flexions:'2sg',meanings:['you (singular)']},
+  {word:'er',ipa:'eːɐ̯',pos:'PRON',flexions:'3sg masc',meanings:['he']},
+  {word:'sie',ipa:'ziː',pos:'PRON',flexions:'3sg fem / 3pl',meanings:['she','they']},
+  {word:'wir',ipa:'viːɐ̯',pos:'PRON',flexions:'1pl',meanings:['we']},
+  {word:'wer',ipa:'veːɐ̯',pos:'Q',flexions:'interrog',meanings:['who']},
+  {word:'was',ipa:'vas',pos:'Q',flexions:'interrog',meanings:['what']},
+  {word:'wo',ipa:'voː',pos:'Q',flexions:'interrog',meanings:['where']},
+  {word:'warum',ipa:'vaˈʁʊm',pos:'Q',flexions:'interrog',meanings:['why']},
+  {word:'schön',ipa:'ʃøːn',pos:'ADJ',flexions:'Pos: schön; Komp: schöner; Sup: am schönsten',meanings:['beautiful','nice']},
+  {word:'alt',ipa:'alt',pos:'ADJ',flexions:'Pos: alt; Komp: älter',meanings:['old']},
+  {word:'neu',ipa:'nɔʏ',pos:'ADJ',flexions:'Pos: neu; Komp: neuer',meanings:['new']},
+  {word:'groß',ipa:'ɡroːs',pos:'ADJ',flexions:'Pos: groß; Komp: größer',meanings:['big','tall']}
+];
+
+function renderIndex(){
+  const idx = document.getElementById('indexList'); idx.innerHTML='';
+  const nonterms = Array.from(document.querySelectorAll('.nonterm')).map(n=>n.dataset.n);
+  nonterms.forEach(n=>{
+    const el = document.createElement('div'); el.innerHTML = `<a class="nonterm" data-n="${n}">${n}</a>`; idx.appendChild(el);
+  });
+}
+
+function renderLex(){
+  const el = document.getElementById('lexList'); el.innerHTML='';
+  lexicon.slice(0,400).forEach(entry=>{
+    const d = document.createElement('div'); d.className='lex-row';
+    d.innerHTML = `<div style="flex:1"><a class="terminal" data-w="${entry.word}">${entry.word}</a> <span style="opacity:.7">(${entry.pos})</span></div><div class="flexions">${entry.flexions||''}</div>`;
+    el.appendChild(d);
+  });
+}
+
+function showModal(word){
+  const m = document.getElementById('modal'); m.classList.add('open');
+  const t = document.getElementById('modalTitle'); const b = document.getElementById('modalBody');
+  const ent = lexicon.find(e=>e.word===word);
+  if(!ent){ t.textContent = word; b.innerHTML = '<div style="opacity:.7">No dictionary entry found in lexicon.</div>'; return }
+  t.textContent = `${ent.word} — /${ent.ipa||''}/`;
+  b.innerHTML = `<div style="margin-top:8px"><strong>Part of speech:</strong> ${ent.pos||''}</div>
+                 <div style="margin-top:8px"><strong>Flexions:</strong><div class="flexions" style="margin-top:6px">${ent.flexions||'—'}</div></div>
+                 <div style="margin-top:8px"><strong>Meanings:</strong><ol>${(ent.meanings||[]).map(m=>`<li>${m}</li>`).join('')}</ol></div>`;
+}
+
+// events
+renderIndex(); renderLex();
+
+document.addEventListener('click', e=>{
+  if(e.target.matches('.nonterm')){
+    const n = e.target.dataset.n;
+    const el = document.getElementById(n);
+    if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.boxShadow='0 0 0 3px rgba(124,58,237,0.12)'; setTimeout(()=>el.style.boxShadow='none',600);
     }
   }
-
-  function jumpTo(nt) {
-    const target = document.getElementById(nt);
-    if (target) target.scrollIntoView({behavior:"smooth", block:"center"});
+  if(e.target.matches('.terminal')){
+    const w = e.target.dataset.w; showModal(w);
   }
+});
 
-  function importJSON() {
-    try {
-      const obj = JSON.parse(document.getElementById("jsonArea").value);
-      alert("Imported JSON with " + Object.keys(obj).length + " keys.");
-    } catch(e) { alert("Invalid JSON!"); }
-  }
+document.getElementById('close').addEventListener('click', ()=>{document.getElementById('modal').classList.remove('open')});
 
-  function exportJSON() {
-    document.getElementById("jsonArea").value =
-      JSON.stringify(lexicon, null, 2);
-  }
+// search
+const search = document.getElementById('search'); document.getElementById('clear').addEventListener('click', ()=>{search.value=''; search.dispatchEvent(new Event('input'))});
+search.addEventListener('input', ()=>{
+  const q = search.value.trim().toLowerCase();
+  // highlight matching nonterms
+  document.querySelectorAll('.bnf-rule').forEach(r=>{ r.style.display='block'; r.style.opacity=1 });
+  if(!q) return;
+  document.querySelectorAll('.nonterm').forEach(nt=>{ if(nt.dataset.n.toLowerCase().includes(q)) nt.style.background='rgba(124,58,237,0.12)'; else nt.style.background='none'; });
+  // hide rules that don't include query
+  document.querySelectorAll('.bnf-rule').forEach(r=>{
+    const text = r.textContent.toLowerCase(); if(!text.includes(q)) r.style.display='none';
+  });
+});
 
-  renderRules();
-  </script>
-</body>
+// import lexicon
+document.getElementById('importLex').addEventListener('click', ()=>{
+  const txt = document.getElementById('lexImport').value.trim(); if(!txt) return alert('Paste a JSON array of lexicon entries first');
+  try{ const arr = JSON.parse(txt); if(!Array.isArray(arr)) throw new Error('Not an array'); lexicon = arr.concat(lexicon); renderLex(); alert('Imported ' + arr.length + ' entries (now '+lexicon.length+' total)'); }
+  catch(err){ alert('JSON parse error: '+err.message) }
+});
+
+</script></body>
 </html>
