@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="de">
 <head>
 <meta charset="utf-8" />
@@ -38,7 +37,8 @@
       <h1>German BNF</h1>
       <div style="font-size:.9rem;color:#9fb0c9">Click nonterminals to jump to definitions. Click terminals to open dictionary entries (sample lexicon included).</div>
     </div>
-  </header>  <div class="grid">
+  </header>
+  <div class="grid">
     <aside class="sidebar">
       <div class="search">
         <input id="search" placeholder="Find nonterminal or word (type &quot;NP&quot; or &quot;Haus&quot;)" />
@@ -52,47 +52,20 @@
       <div class="bnf-title">Lexicon (sample)</div>
       <div id="lexList" style="max-height:36vh;overflow:auto"></div>
       <hr style="opacity:.06;margin:10px 0">
-      <div style="font-size:.85rem">Tips: paste a larger JSON lexicon into the textarea below to extend to ~2k terminals. The format is an array of objects: {"word":"Haus","ipa":"haʊs","pos":"N","flexions":"Singular: Haus; Plural: Häuser","meanings":["house","building"]}</div>
+      <div style="font-size:.85rem">Tips: paste a larger JSON lexicon into the textarea below to extend to ~2k terminals.</div>
       <textarea id="lexImport" placeholder='Paste JSON lexicon here (array)' style="width:100%;height:90px;margin-top:8px;background:#020b12;color:#cde6f0;border-radius:6px;padding:8px"></textarea>
       <button id="importLex">Import lexicon</button>
-    </aside><main class="main">
-  <section id="bnfArea">
-    <div class="bnf-rule" id="S"><span class="nonterm" data-n="S">&lt;S&gt;</span> ::= &lt;NP&gt; &lt;VP&gt; | &lt;VP&gt;</div>
-    <div class="bnf-rule" id="NP"><span class="nonterm" data-n="NP">&lt;NP&gt;</span> ::= &lt;Det&gt; &lt>NN&gt; | &lt>NN&gt; | &lt;NP&gt; &lt;PP&gt;</div>
-    <div class="bnf-rule" id="VP"><span class="nonterm" data-n="VP">&lt;VP&gt;</span> ::= &lt;V&gt; | &lt;V&gt; &lt;NP&gt; | &lt;V&gt; &lt;PP&gt; | &lt;V&gt; &lt;NP&gt; &lt;PP&gt;</div>
-    <div class="bnf-rule" id="Det"><span class="nonterm" data-n="Det">&lt;Det&gt;</span> ::= <span class="terminal" data-w="der">der</span> | <span class="terminal" data-w="die">die</span> | <span class="terminal" data-w="das">das</span> | <span class="terminal" data-w="ein">ein</span> | <span class="terminal" data-w="eine">eine</span>
-    </div>
-
-    <div class="bnf-rule" id="NN"><span class="nonterm" data-n="NN">&lt;NN&gt;</span> ::= <span class="terminal" data-w="Mann">Mann</span> | <span class="terminal" data-w="Frau">Frau</span> | <span class="terminal" data-w="Haus">Haus</span> | <span class="terminal" data-w="Kind">Kind</span> | <span class="terminal" data-w="Auto">Auto</span>
-    </div>
-
-    <div class="bnf-rule" id="V"><span class="nonterm" data-n="V">&lt;V&gt;</span> ::= <span class="terminal" data-w="ist">ist</span> | <span class="terminal" data-w="hat">hat</span> | <span class="terminal" data-w="geht">geht</span> | <span class="terminal" data-w="sieht">sieht</span> | <span class="terminal" data-w="nimmt">nimmt</span>
-    </div>
-
-    <div class="bnf-rule" id="AdjP"><span class="nonterm" data-n="AdjP">&lt;AdjP&gt;</span> ::= &lt;Adj&gt; | &lt;Adj&gt; &lt;AdjP&gt;</div>
-    <div class="bnf-rule" id="Adj"><span class="nonterm" data-n="Adj">&lt;Adj&gt;</span> ::= <span class="terminal" data-w="schön">schön</span> | <span class="terminal" data-w="alt">alt</span> | <span class="terminal" data-w="neu">neu</span> | <span class="terminal" data-w="groß">groß</span></div>
-
-    <div class="bnf-rule" id="PP"><span class="nonterm" data-n="PP">&lt;PP&gt;</span> ::= &lt;P&gt; &lt;NP&gt;</div>
-    <div class="bnf-rule" id="P"><span class="nonterm" data-n="P">&lt;P&gt;</span> ::= <span class="terminal" data-w="in">in</span> | <span class="terminal" data-w="auf">auf</span> | <span class="terminal" data-w="mit">mit</span> | <span class="terminal" data-w="von">von</span>
-    </div>
-
-    <div class="bnf-rule" id="Pron"><span class="nonterm" data-n="Pron">&lt;Pron&gt;</span> ::= <span class="terminal" data-w="ich">ich</span> | <span class="terminal" data-w="du">du</span> | <span class="terminal" data-w="er">er</span> | <span class="terminal" data-w="sie">sie</span> | <span class="terminal" data-w="wir">wir</span>
-    </div>
-
-    <div class="bnf-rule" id="SentenceTypes"><span class="nonterm" data-n="SentenceTypes">&lt;SentenceTypes&gt;</span> ::= &lt;S&gt; | &lt;Q&gt; | &lt;Imp&gt;</div>
-    <div class="bnf-rule" id="Q"><span class="nonterm" data-n="Q">&lt;Q&gt;</span> ::= <span class="terminal" data-w="wer">wer</span> | <span class="terminal" data-w="was">was</span> | <span class="terminal" data-w="wo">wo</span> | <span class="terminal" data-w="warum">warum</span>
-    </div>
-
-    <div style="margin-top:12px;font-size:.95rem;color:#9fb0c9">This BNF is intentionally compact. Expand rules or the lexicon as needed — the_import area on the left accepts a JSON array of lexicon objects.</div>
-  </section>
-
-  <footer>
-    <div>Export: copy the whole HTML into a new CodePen (HTML panel). The script is self-contained (no external servers). To reach ~2k terminals, paste a lexicon JSON with ~2000 objects into the import textarea and press "Import lexicon".</div>
-  </footer>
-</main>
-
+    </aside>
+    <main class="main">
+      <section id="bnfArea"></section>
+      <footer>
+        <div>Export: copy the whole HTML into a new CodePen. Import your lexicon JSON to extend terminals.</div>
+      </footer>
+    </main>
   </div>
-</div><!-- Modal for dictionary entries --><div class="modal" id="modal">
+</div>
+
+<div class="modal" id="modal">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div id="modalTitle" style="font-size:1.1rem;font-weight:600"></div>
@@ -101,163 +74,154 @@
     <div style="margin-top:8px" id="modalBody"></div>
   </div>
 </div>
+
 <script>
+let lexicon = [];
+let cfg = [];
 
-let lexicon = []; // Initialize as empty array
-
-function loadLexicon() {
+// Load lexicon
+function loadLexicon(){
     fetch('lexicon.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            lexicon = data.data || [];
-            renderIndex(); 
-            renderLex();
-        })
-        .catch(error => {
-            console.error('Error loading lexicon:', error);
-            lexicon = [];
-            renderIndex();
-            renderLex();
-        });
+    .then(r=>r.ok ? r.json() : Promise.reject('Network error'))
+    .then(d=>{
+        lexicon = d.data || [];
+        renderIndex();
+        renderLex();
+    })
+    .catch(e=>{ console.error(e); lexicon=[]; renderIndex(); renderLex(); });
 }
 
+// Load CFG from cfg.json
+function loadCFG(){
+    fetch('cfg.json')
+    .then(r=>r.ok ? r.json() : Promise.reject('Network error'))
+    .then(d=>{
+        cfg = d.data || [];
+        renderCFG();
+        renderIndex();
+    })
+    .catch(e=>{ console.error('Error loading CFG:', e); });
+}
+
+// Render CFG into BNF area
+function renderCFG(){
+    const area = document.getElementById('bnfArea');
+    if(!area) return;
+    area.innerHTML='';
+    cfg.forEach(rule=>{
+        const div = document.createElement('div');
+        div.className='bnf-rule';
+        div.id = rule.nonterminal;
+        const rhs = rule.productions.map(seq=>{
+            return seq.map(s=>{
+                if(typeof s==='string'){
+                    if(s.startsWith('<') && s.endsWith('>')){
+                        return `<span class="nonterm" data-n="${s.slice(1,-1)}">${s}</span>`;
+                    } else {
+                        return `<span class="terminal" data-w="${s}">${s}</span>`;
+                    }
+                } else if(s.optional){
+                    return `[<span class="nonterm" data-n="${s.optional}">${s.optional}</span>]`;
+                } else if(s.repeat){
+                    return `{<span class="nonterm" data-n="${s.repeat}">${s.repeat}</span>}`;
+                } else if(s.anyOf){
+                    return `(${s.anyOf.map(a=>'<span class="nonterm" data-n="'+a+'">'+a+'</span>').join(' | ')})`;
+                }
+                return s;
+            }).join(' ');
+        }).join(' | ');
+        div.innerHTML = `<span class="nonterm" data-n="${rule.nonterminal}">&lt;${rule.nonterminal}&gt;</span> ::= ${rhs}`;
+        area.appendChild(div);
+    });
+}
+
+// Render lexicon sidebar
+function renderLex(){
+    const el = document.getElementById('lexList');
+    if(!el) return; el.innerHTML='';
+    lexicon.forEach(entry=>{
+        const d = document.createElement('div');
+        d.className='lex-row';
+        d.innerHTML = `<div style="flex:1"><a class="terminal" data-w="${entry.word}">${entry.word}</a> <span style="opacity:.7">(${entry.pos})</span></div><div class="flexions">${entry.flexions||''}</div>`;
+        el.appendChild(d);
+    });
+}
+
+// Render nonterminal index
 function renderIndex(){
     const idx = document.getElementById('indexList');
-    if (!idx) return;
+    if(!idx) return;
     idx.innerHTML='';
-    const nonterms = Array.from(document.querySelectorAll('.nonterm')).map(n=>n.dataset.n);
-    const uniqueNonterms = [...new Set(nonterms)]; // Remove duplicates
-    uniqueNonterms.forEach(n=>{
+    const nonterms = cfg.map(r=>r.nonterminal);
+    nonterms.forEach(n=>{
         const el = document.createElement('div');
         el.innerHTML = `<a class="nonterm" data-n="${n}" style="cursor:pointer;color:var(--accent);text-decoration:underline">&lt;${n}&gt;</a>`;
         idx.appendChild(el);
     });
 }
 
-function renderLex(){
-    const el = document.getElementById('lexList');
-    if (!el) return;
-    el.innerHTML='';
-    lexicon.forEach(entry=>{
-        const d = document.createElement('div');
-        d.className='lex-row';
-        d.innerHTML = `<div style="flex:1"><a class="terminal" data-w="${entry.word}" style="cursor:pointer;color:#9fe3c1">${entry.word}</a> <span style="opacity:.7">(${entry.pos})</span></div><div class="flexions">${entry.flexions||''}</div>`;
-        el.appendChild(d);
-    });
-}
-
+// Show dictionary modal
 function showModal(word){
     const m = document.getElementById('modal');
     const t = document.getElementById('modalTitle');
     const b = document.getElementById('modalBody');
-    if (!m || !t || !b) return;
-    
+    if(!m||!t||!b) return;
     m.classList.add('open');
     const ent = lexicon.find(e=>e.word===word);
-    if(!ent){ 
-        t.textContent = word; 
-        b.innerHTML = '<div style="opacity:.7">No dictionary entry found in lexicon.</div>'; 
-        return; 
-    }
+    if(!ent){ t.textContent=word; b.innerHTML='<div style="opacity:.7">No dictionary entry found.</div>'; return; }
     t.textContent = `${ent.word} — /${ent.ipa||''}/`;
-    b.innerHTML = `<div style="margin-top:8px"><strong>Part of speech:</strong> ${ent.pos||''}</div>
+    b.innerHTML = `<div style="margin-top:8px"><strong>POS:</strong> ${ent.pos||''}</div>
                    <div style="margin-top:8px"><strong>Flexions:</strong><div class="flexions" style="margin-top:6px">${ent.flexions||'—'}</div></div>
                    <div style="margin-top:8px"><strong>Meanings:</strong><ol>${(ent.meanings||[]).map(m=>`<li>${m}</li>`).join('')}</ol></div>`;
 }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Init
+document.addEventListener('DOMContentLoaded', function(){
     loadLexicon();
-    
+    loadCFG();
+
     document.addEventListener('click', function(e){
         if(e.target.matches('.nonterm')){
             const n = e.target.dataset.n;
             const el = document.getElementById(n);
-            if(el){ 
-                el.scrollIntoView({behavior:'smooth',block:'center'}); 
-                el.style.boxShadow='0 0 0 3px rgba(124,58,237,0.12)'; 
-                setTimeout(()=>el.style.boxShadow='none',600);
-            }
+            if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.boxShadow='0 0 0 3px rgba(124,58,237,0.12)'; setTimeout(()=>el.style.boxShadow='none',600); }
         }
         if(e.target.matches('.terminal')){
-            const w = e.target.dataset.w; 
+            const w = e.target.dataset.w;
             showModal(w);
         }
     });
 
-    // Close modal button
     const closeBtn = document.getElementById('close');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function(){
-            const modal = document.getElementById('modal');
-            if (modal) modal.classList.remove('open');
-        });
-    }
+    if(closeBtn) closeBtn.addEventListener('click',()=>document.getElementById('modal').classList.remove('open'));
 
-    // Search functionality
     const search = document.getElementById('search');
     const clearBtn = document.getElementById('clear');
-    
-    if (clearBtn) {
-        clearBtn.addEventListener('click', function(){
-            if (search) search.value = '';
-            search.dispatchEvent(new Event('input'));
-        });
-    }
-    
-    if (search) {
-        search.addEventListener('input', function(){
-            const q = this.value.trim().toLowerCase();
-            // Reset all first
-            document.querySelectorAll('.bnf-rule').forEach(r=>{ 
-                r.style.display='block'; 
-                r.style.opacity=1; 
-            });
-            document.querySelectorAll('.nonterm').forEach(nt=>{ 
-                nt.style.background='none'; 
-            });
-            
-            if(!q) return;
-            
-            // Highlight matching nonterms
-            document.querySelectorAll('.nonterm').forEach(nt=>{ 
-                if(nt.dataset.n.toLowerCase().includes(q)) 
-                    nt.style.background='rgba(124,58,237,0.12)'; 
-            });
-            
-            // Hide rules that don't include query
-            document.querySelectorAll('.bnf-rule').forEach(r=>{
-                const text = r.textContent.toLowerCase(); 
-                if(!text.includes(q)) r.style.display='none';
-            });
-        });
-    }
+    if(clearBtn) clearBtn.addEventListener('click',()=>{ if(search) search.value=''; search.dispatchEvent(new Event('input')); });
+    if(search) search.addEventListener('input',function(){
+        const q = this.value.trim().toLowerCase();
+        document.querySelectorAll('.bnf-rule').forEach(r=>{ r.style.display='block'; r.style.opacity=1; });
+        document.querySelectorAll('.nonterm').forEach(nt=>{ nt.style.background='none'; });
+        if(!q) return;
+        document.querySelectorAll('.nonterm').forEach(nt=>{ if(nt.dataset.n.toLowerCase().includes(q)) nt.style.background='rgba(124,58,237,0.12)'; });
+        document.querySelectorAll('.bnf-rule').forEach(r=>{ if(!r.textContent.toLowerCase().includes(q)) r.style.display='none'; });
+    });
 
     // Import lexicon
     const importBtn = document.getElementById('importLex');
-    if (importBtn) {
-        importBtn.addEventListener('click', function(){
-            const txtArea = document.getElementById('lexImport');
-            if (!txtArea) return;
-            
-            const txt = txtArea.value.trim(); 
-            if(!txt) return alert('Paste a JSON array of lexicon entries first');
-            
-            try{ 
-                const arr = JSON.parse(txt); 
-                if(!Array.isArray(arr)) throw new Error('Not an array'); 
-                lexicon = arr.concat(lexicon); 
-                renderLex(); 
-                alert('Imported ' + arr.length + ' entries (now '+lexicon.length+' total)'); 
-            }
-            catch(err){ alert('JSON parse error: '+err.message) }
-        });
-    }
+    if(importBtn) importBtn.addEventListener('click', function(){
+        const txtArea = document.getElementById('lexImport');
+        if(!txtArea) return;
+        const txt = txtArea.value.trim();
+        if(!txt) return alert('Paste a JSON array of lexicon entries first');
+        try{
+            const arr = JSON.parse(txt);
+            if(!Array.isArray(arr)) throw new Error('Not an array');
+            lexicon = arr.concat(lexicon);
+            renderLex();
+            alert('Imported ' + arr.length + ' entries (now '+lexicon.length+' total)');
+        } catch(err){ alert('JSON parse error: '+err.message); }
+    });
 });
 </script>
 </body>
