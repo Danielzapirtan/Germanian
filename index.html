@@ -103,7 +103,7 @@ function loadCFG(){
     .catch(e=>{ console.error('Error loading CFG:', e); });
 }
 
-function RenderCFG() {
+function renderCFG() {
     const outputElement = document.getElementById('bnfArea');
     if (!outputElement) {
         console.error(`Element with id '${outputElementId}' not found`);
