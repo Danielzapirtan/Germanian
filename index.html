@@ -35,31 +35,22 @@
   <header>
     <div>
       <h1>German BNF</h1>
-      <div style="font-size:.9rem;color:#9fb0c9">Click nonterminals to jump to definitions. Click terminals to open dictionary entries (sample lexicon included).</div>
     </div>
   </header>
   <div class="grid">
     <aside class="sidebar">
-      <div class="search">
-        <input id="search" placeholder="Find nonterminal or word (type &quot;NP&quot; or &quot;Haus&quot;)" />
-        <button id="clear">Clear</button>
-      </div>
       <div class="bnf-index">
-        <div class="bnf-title">Index (nonterminals)</div>
+        <div class="bnf-title">CFG (nonterminals)</div>
         <div id="indexList"></div>
       </div>
       <hr style="opacity:.06;margin:10px 0">
       <div class="bnf-title">Lexicon (sample)</div>
       <div id="lexList" style="max-height:36vh;overflow:auto"></div>
       <hr style="opacity:.06;margin:10px 0">
-      <div style="font-size:.85rem">Tips: paste a larger JSON lexicon into the textarea below to extend to ~2k terminals.</div>
-      <textarea id="lexImport" placeholder='Paste JSON lexicon here (array)' style="width:100%;height:90px;margin-top:8px;background:#020b12;color:#cde6f0;border-radius:6px;padding:8px"></textarea>
-      <button id="importLex">Import lexicon</button>
     </aside>
     <main class="main">
       <section id="bnfArea"></section>
       <footer>
-        <div>Export: copy the whole HTML into a new CodePen. Import your lexicon JSON to extend terminals.</div>
       </footer>
     </main>
   </div>
@@ -180,33 +171,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const closeBtn = document.getElementById('close');
     if(closeBtn) closeBtn.addEventListener('click',()=>document.getElementById('modal').classList.remove('open'));
 
-    const search = document.getElementById('search');
-    const clearBtn = document.getElementById('clear');
-    if(clearBtn) clearBtn.addEventListener('click',()=>{ if(search) search.value=''; search.dispatchEvent(new Event('input')); });
-    if(search) search.addEventListener('input',function(){
-        const q = this.value.trim().toLowerCase();
-        document.querySelectorAll('.bnf-rule').forEach(r=>{ r.style.display='block'; r.style.opacity=1; });
-        document.querySelectorAll('.nonterm').forEach(nt=>{ nt.style.background='none'; });
-        if(!q) return;
-        document.querySelectorAll('.nonterm').forEach(nt=>{ if(nt.dataset.n.toLowerCase().includes(q)) nt.style.background='rgba(124,58,237,0.12)'; });
-        document.querySelectorAll('.bnf-rule').forEach(r=>{ if(!r.textContent.toLowerCase().includes(q)) r.style.display='none'; });
-    });
-
-    // Import lexicon
-    const importBtn = document.getElementById('importLex');
-    if(importBtn) importBtn.addEventListener('click', function(){
-        const txtArea = document.getElementById('lexImport');
-        if(!txtArea) return;
-        const txt = txtArea.value.trim();
-        if(!txt) return alert('Paste a JSON array of lexicon entries first');
-        try{
-            const arr = JSON.parse(txt);
-            if(!Array.isArray(arr)) throw new Error('Not an array');
-            lexicon = arr.concat(lexicon);
-            renderLex();
-            alert('Imported ' + arr.length + ' entries (now '+lexicon.length+' total)');
-        } catch(err){ alert('JSON parse error: '+err.message); }
-    });
 });
 </script>
 </body>
