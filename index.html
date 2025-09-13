@@ -112,7 +112,7 @@ function renderCFG() {
 
     let bnfOutput = '';
 
-    cfg.data.forEach(rule => {
+    cfg.forEach(rule => {
         // Add nonterminal
         bnfOutput += `<strong>${rule.nonterminal}</strong> ::= `;
         
