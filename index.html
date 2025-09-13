@@ -110,35 +110,9 @@ function renderCFG() {
         return;
     }
 
-    let bnfOutput = '';
+    let bnfOutput = `${cfg}`;
 
-    cfg.forEach(rule => {
-        // Add nonterminal
-        bnfOutput += `<strong>${rule.nonterminal}</strong> ::= `;
-        
-        // Add productions
-        const productionStrings = rule.productions.map(production => {
-            return production.map(element => {
-                if (typeof element === 'string') {
-                    // Regular symbol
-                    return element.startsWith('<') ? element : `"${element}"`;
-                } else if (typeof element === 'object') {
-                    // Handle optional and repeat constructs
-                    if (element.optional) {
-                        return `[ ${element.optional} ]`;
-                    } else if (element.repeat) {
-                        return `{ ${element.repeat} }`;
-                    }
-                }
-                return JSON.stringify(element); // Fallback
-            }).join(' ');
-        });
-
-        bnfOutput += productionStrings.join(' | ');
-        bnfOutput += '<br><br>';
-    });
-
-    outputElement.innerHTML = `${bnfOutput}`;
+    outputElement.innerHTML = bnfOutput;
 }
 
 
