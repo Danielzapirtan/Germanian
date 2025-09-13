@@ -111,6 +111,9 @@ function renderCFG() {
     }
 
     let bnfOutput = `${cfg}`;
+    cfg.forEach(rule=>{
+		    document.getElementById("indexList").innerHTML += `<${rule.nonterminal}><br><br>`;
+	    });
 
     outputElement.innerHTML = bnfOutput;
 }
