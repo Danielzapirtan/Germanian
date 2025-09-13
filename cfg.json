@@ -1,107 +1,107 @@
 {"data":
 [
   {
-    "nonterminal": "<sentence>",
+    "nonterminal": "_sentence_",
     "productions": [
-      ["<main-clause>"],
-      ["<main-clause>", "<subordinate-clause>"],
-      ["<compound-sentence>"],
-      ["<question>"],
-      ["<imperative>"]
+      ["_main-clause_"],
+      ["_main-clause_", "_subordinate-clause_"],
+      ["_compound-sentence_"],
+      ["_question_"],
+      ["_imperative_"]
     ]
   },
   {
-    "nonterminal": "<main-clause>",
+    "nonterminal": "_main-clause_",
     "productions": [
-      ["<noun-phrase>", "<verb-phrase>"],
-      ["<verb-phrase>", "<noun-phrase>"]
+      ["_noun-phrase_", "_verb-phrase_"],
+      ["_verb-phrase_", "_noun-phrase_"]
     ]
   },
   {
-    "nonterminal": "<subordinate-clause>",
+    "nonterminal": "_subordinate-clause_",
     "productions": [
-      ["<subordinator>", "<noun-phrase>", "<verb-phrase>"]
+      ["_subordinator_", "_noun-phrase_", "_verb-phrase_"]
     ]
   },
   {
-    "nonterminal": "<compound-sentence>",
+    "nonterminal": "_compound-sentence_",
     "productions": [
-      ["<main-clause>", "<conjunction>", "<main-clause>"]
+      ["_main-clause_", "_conjunction_", "_main-clause_"]
     ]
   },
   {
-    "nonterminal": "<question>",
+    "nonterminal": "_question_",
     "productions": [
-      ["<interrogative-pronoun>", "<verb-phrase>"],
-      ["<verb>", "<noun-phrase>", "<rest-of-clause>"]
+      ["_interrogative-pronoun_", "_verb-phrase_"],
+      ["_verb_", "_noun-phrase_", "_rest-of-clause_"]
     ]
   },
   {
-    "nonterminal": "<imperative>",
+    "nonterminal": "_imperative_",
     "productions": [
-      ["<verb>", {"optional": "<noun-phrase>"}]
+      ["_verb_", {"optional": "_noun-phrase_"}]
     ]
   },
   {
-    "nonterminal": "<noun-phrase>",
+    "nonterminal": "_noun-phrase_",
     "productions": [
-      ["<determiner>", {"repeat": "<adjective>"}, "<noun>"],
-      ["<pronoun>"]
+      ["_determiner_", {"repeat": "_adjective_"}, "_noun_"],
+      ["_pronoun_"]
     ]
   },
   {
-    "nonterminal": "<verb-phrase>",
+    "nonterminal": "_verb-phrase_",
     "productions": [
-      ["<verb>"],
-      ["<verb>", "<noun-phrase>"],
-      ["<verb>", "<noun-phrase>", "<prepositional-phrase>"],
-      ["<modal-verb>", "<verb>"],
-      ["<verb>", {"optional": "<negation>"}, "<noun-phrase>"]
+      ["_verb_"],
+      ["_verb_", "_noun-phrase_"],
+      ["_verb_", "_noun-phrase_", "_prepositional-phrase_"],
+      ["_modal-verb_", "_verb_"],
+      ["_verb_", {"optional": "_negation_"}, "_noun-phrase_"]
     ]
   },
   {
-    "nonterminal": "<prepositional-phrase>",
+    "nonterminal": "_prepositional-phrase_",
     "productions": [
-      ["<preposition>", "<noun-phrase>"]
+      ["_preposition_", "_noun-phrase_"]
     ]
   },
   {
-    "nonterminal": "<adjective>",
+    "nonterminal": "_adjective_",
     "productions": [
-      ["<adjective-base>"]
+      ["_adjective-base_"]
     ]
   },
   {
-    "nonterminal": "<determiner>",
+    "nonterminal": "_determiner_",
     "productions": [
-      ["<article>"],
-      ["<possessive-pronoun>"],
-      ["<demonstrative-pronoun>"]
+      ["_article_"],
+      ["_possessive-pronoun_"],
+      ["_demonstrative-pronoun_"]
     ]
   },
   {
-    "nonterminal": "<pronoun>",
+    "nonterminal": "_pronoun_",
     "productions": [
-      ["<personal-pronoun>"],
-      ["<reflexive-pronoun>"],
-      ["<relative-pronoun>"]
+      ["_personal-pronoun_"],
+      ["_reflexive-pronoun_"],
+      ["_relative-pronoun_"]
     ]
   },
   {
-    "nonterminal": "<verb>",
+    "nonterminal": "_verb_",
     "productions": [
-      ["<lexical-verb>"],
-      ["<auxiliary-verb>"]
+      ["_lexical-verb_"],
+      ["_auxiliary-verb_"]
     ]
   },
   {
-    "nonterminal": "<modal-verb>",
+    "nonterminal": "_modal-verb_",
     "productions": [
-      ["<lexical-modal>"]
+      ["_lexical-modal_"]
     ]
   },
   {
-    "nonterminal": "<subordinator>",
+    "nonterminal": "_subordinator_",
     "productions": [
       ["weil"],
       ["dass"],
@@ -110,7 +110,7 @@
     ]
   },
   {
-    "nonterminal": "<conjunction>",
+    "nonterminal": "_conjunction_",
     "productions": [
       ["und"],
       ["oder"],
@@ -119,14 +119,14 @@
     ]
   },
   {
-    "nonterminal": "<negation>",
+    "nonterminal": "_negation_",
     "productions": [
       ["nicht"],
       ["kein"]
     ]
   },
   {
-    "nonterminal": "<interrogative-pronoun>",
+    "nonterminal": "_interrogative-pronoun_",
     "productions": [
       ["wer"],
       ["was"],
@@ -137,7 +137,7 @@
     ]
   },
   {
-    "nonterminal": "<article>",
+    "nonterminal": "_article_",
     "productions": [
       ["der"],
       ["die"],
@@ -147,7 +147,7 @@
     ]
   },
   {
-    "nonterminal": "<preposition>",
+    "nonterminal": "_preposition_",
     "productions": [
       ["auf"],
       ["unter"],
@@ -158,7 +158,7 @@
     ]
   },
   {
-    "nonterminal": "<relative-pronoun>",
+    "nonterminal": "_relative-pronoun_",
     "productions": [
       ["der"],
       ["die"],

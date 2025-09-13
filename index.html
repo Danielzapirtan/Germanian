@@ -85,7 +85,7 @@ function loadLexicon(){
     .then(r=>r.ok ? r.json() : Promise.reject('Network error'))
     .then(d=>{
         lexicon = d.data || [];
-        renderIndex();
+        //renderIndex();
         renderLex();
     })
     .catch(e=>{ console.error(e); lexicon=[]; renderIndex(); renderLex(); });
@@ -98,24 +98,25 @@ function loadCFG(){
     .then(d=>{
         cfg = d.data || [];
         renderCFG();
-        renderIndex();
+        //renderIndex();
     })
     .catch(e=>{ console.error('Error loading CFG:', e); });
 }
 
 function renderCFG() {
-    const outputElement = document.getElementById('bnfArea');
+    const outputElement = document.getElementById('indexList');
     if (!outputElement) {
         console.error(`Element with id '${outputElementId}' not found`);
         return;
     }
-
-    let bnfOutput = `${cfg}`;
+    outputElement.innerHTML = ``;
     cfg.forEach(rule=>{
-		    document.getElementById("indexList").innerHTML += `<${rule.nonterminal}><br><br>`;
+            const nonterminal = rule.nonterminal;
+            el = document.createElement('div');
+	    el.name = nonterminal;
+	    el.innerHTML = `${nonterminal} ${JSON.stringify(rule.productions)}`;
+	    outputElement.appendChild(el);
 	    });
-
-    outputElement.innerHTML = bnfOutput;
 }
 
 
